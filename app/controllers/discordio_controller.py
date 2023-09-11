@@ -5,18 +5,18 @@ from flask import request, session
 class UsuarioController:
 
     @classmethod
-    def inicio_seccion(cls):
+    def inicio_sesion(cls):
         data = request.json
         usuario = Usuario(
             nombre_usuario = data.get('nombre_usuario'),
-            contraseña = data.get('contraseña')
+            contrasena = data.get('contrasena')
         )
         
         if Usuario.is_registered(usuario):
             session['nombre_usuario'] = data.get('nombre_usuario')
             return {"message": "Sesion iniciada"}, 200
         else:
-            return {"message": "Usuario o contraseña incorrectos"}, 401
+            return {"message": "Usuario o contrasena incorrectos"}, 401
     
    
     @classmethod
@@ -29,6 +29,6 @@ class UsuarioController:
             return usuario.serialize(), 200
     
     @classmethod
-    def cerrar_seccion(cls):
+    def cerrar_sesion(cls):
         session.pop('nombre_usuario', None)
         return {"message": "Sesion cerrada"}, 200
