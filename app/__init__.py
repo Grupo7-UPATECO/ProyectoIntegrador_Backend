@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
+from .routes.servidor_bp import servidor_bp
 from config import Config
 
-from .routes.discordio_bp import discordio_bp
+from .routes.usuario_bp import usuario_bp
 
 from .database import DatabaseConnection
 
@@ -19,7 +20,7 @@ def init_app():
 
     DatabaseConnection.set_config(app.config)
 
-    app.register_blueprint(discordio_bp, url_prefix = '/usuario')
-
+    app.register_blueprint(usuario_bp, url_prefix = '/usuario')
+    app.register_blueprint(servidor_bp, url_prefix= "/servidor")
 
     return app
