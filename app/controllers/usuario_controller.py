@@ -32,3 +32,4 @@ class UsuarioController:
     def cerrar_sesion(cls):
         session.pop('nombre_usuario', None)
         return {"message": "Sesion cerrada"}, 200
+    
