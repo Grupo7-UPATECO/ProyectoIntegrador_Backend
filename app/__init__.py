@@ -4,6 +4,7 @@ from .routes.servidor_bp import servidor_bp
 from config import Config
 
 from .routes.usuario_bp import usuario_bp
+from .routes.canal_bp import canal_bp
 
 from .database import DatabaseConnection
 
@@ -22,5 +23,6 @@ def init_app():
 
     app.register_blueprint(usuario_bp, url_prefix = '/usuario')
     app.register_blueprint(servidor_bp, url_prefix= "/servidor")
+    app.register_blueprint(canal_bp, url_prefix= "/canal")
 
     return app
