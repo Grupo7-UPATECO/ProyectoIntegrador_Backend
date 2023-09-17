@@ -1,5 +1,6 @@
 from flask import request
 from app.models.servidor import Servidor
+from app.models.usuario import Usuario
 
 
 class ServidorController:
@@ -50,3 +51,12 @@ class ServidorController:
         Servidor.eliminar_servidor(servidor)
         return {'message': 'Servidor eliminado exitosamente'}
             
+    @classmethod
+    def traer_servidores_por_usuario(self, nombre_usuario):
+        """Tre los servidores a los que pertenece un usuario"""
+        # nombre_usuario = Usuario(nombre_usuario=nombre_usuario)
+        resultado = Servidor.traer_servidores_de_un_usuario(nombre_usuario=nombre_usuario)
+        servidores = []
+        for servidor in resultado:
+            servidores.append(servidor.serialize())
+        return servidores, 200
