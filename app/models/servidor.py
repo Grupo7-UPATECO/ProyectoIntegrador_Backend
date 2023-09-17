@@ -64,3 +64,26 @@ class Servidor:
         query = """DELETE FROM discordio.servidor WHERE id_servidor = %s"""
         params = servidor.id_servidor,
         DatabaseConnection.execute_query(query, params=params)
+
+    
+    # READ
+    # Traer los servidores a los que pertenezca un usuario
+    @classmethod
+    def traer_servidores_de_un_usuario(self, nombre_usuario):
+        """
+        Traer los servidores a los que pertenezca un usuario
+        """
+        query = """SELECT discordio.servidor.id_servidor, discordio.servidor.nombre_servidor, discordio.usuarios_servidor.id_usuario FROM discordio.servidor 
+        INNER JOIN discordio.usuarios_servidor ON discordio.servidor.id_servidor = discordio.usuarios_servidor.id_servidor
+        INNER JOIN discordio.usuarios ON discordio.usuarios_servidor.id_usuario = discordio.usuarios.id_usuario
+        WHERE usuarios.nombre_usuario = %s;"""
+
+        params = (nombre_usuario,)
+        resultados = DatabaseConnection.fetch_all(query, params=params)
+
+        servidores = []
+        if resultados is not None:
+            for resultado in resultados:
+                servidores.append(self(*resultado))
+                
+        return servidores
