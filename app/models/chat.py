@@ -40,3 +40,11 @@ class Chat:
                 chats.append(self(*resultado))
         
         return chats
+    
+    
+    @classmethod
+    def crear_mensaje(self, msj):
+        """Crea un mensaje"""
+        query = """INSERT INTO discordio.chats ( chat, id_usuario, id_canal) VALUES ( %s, %s,  %s);"""
+        params =  msj.chat, msj.id_usuario, msj.id_canal
+        DatabaseConnection.execute_query(query, params=params)
