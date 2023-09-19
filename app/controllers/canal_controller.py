@@ -24,3 +24,18 @@ class CanalController:
                 canales.append(canal.serialize())
             return canales, 200
         
+        @classmethod
+        def crear_nuevo(self):
+            """Crea un nuevo canal. Si el nombre ya existe, arroja un error"""
+            data = request.json
+            canal = Canal(**data)
+    
+            nombre_canal = data.get('nombre_canal')
+    
+            if canal.existe(nombre_canal):
+                # AGREGAR EXCEPCIONES
+                return {'error': 'El canal ya existe'},400
+            else:
+                Canal.crear_canal(canal)
+            return {'message': 'canal creado exitosamente'}, 200
+        

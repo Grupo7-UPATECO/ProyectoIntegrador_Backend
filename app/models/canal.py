@@ -41,3 +41,22 @@ class Canal:
             for resultado in resultados:
                 canales.append(cls(*resultado))
         return canales
+
+    @classmethod
+    def crear_canal(cls, canal):
+        """Crea un nuevo canal"""
+        query = """INSERT INTO discordio.canales (nombre_canal, id_servidor) VALUES (%s, %s)"""
+        params = (canal.nombre_canal, canal.id_servidor)
+        DatabaseConnection.execute_query(query, params=params)
+
+    def existe(self, nombre_canal):
+        """Verifica si el canal existe"""
+        query = """SELECT * FROM discordio.canales WHERE nombre_canal = %s"""
+        params = nombre_canal,
+        resultado = DatabaseConnection.fetch_one(query, params=params)
+        if resultado is not None:
+            return True
+        else:
+            return False
+        
+        
