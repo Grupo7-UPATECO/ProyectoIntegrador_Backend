@@ -48,3 +48,12 @@ class Chat:
         query = """INSERT INTO discordio.chats ( chat, id_usuario, id_canal) VALUES ( %s, %s,  %s);"""
         params =  msj.chat, msj.id_usuario, msj.id_canal
         DatabaseConnection.execute_query(query, params=params)
+
+
+    @classmethod
+    def eliminar_mensaje(self, msj):
+        """Elimina un mensaje por su id"""
+        query = """DELETE FROM discordio.chats WHERE id_chat = %s"""
+        params = msj.id_chat,
+        # chequear si el usuario que quiere eliminar el mensaje es el autor > chat.id_usuario = id_usuario
+        DatabaseConnection.execute_query(query, params=params)
