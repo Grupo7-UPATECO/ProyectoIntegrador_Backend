@@ -1,3 +1,4 @@
+from app.models.exceptions import NoAutorizado, NoEncontrado
 from ..models.usuario import Usuario
 
 from flask import request, session
@@ -17,7 +18,7 @@ class UsuarioController:
             session['nombre_usuario'] = data.get('nombre_usuario')
             return {"message": "Sesion iniciada"}, 200
         else:
-            return {"message": "Usuario o contrasena incorrectos"}, 401
+            return {"message": "Usuario o contraseña incorrectos"}, 401
     
    
     @classmethod
@@ -28,8 +29,8 @@ class UsuarioController:
             usuario_logeado = Usuario(nombre_usuario=nombre_usuario)
             resultado = Usuario.obtener_usuario(usuario_logeado)
             if resultado is None:
-                return {"message": "Usuario no encontrado"}, 404
-    
+                # return {"message": "Usuario no encontrado"}, 404
+                raise NoEncontrado(404, "No encontrado", f"El usuario {nombre_usuario} no ha sido encontrado")
             return resultado.serialize(), 200
         else:
             return {"message": "Usuario no encontrado"}, 400

@@ -6,7 +6,7 @@ from config import Config
 from .routes.usuario_bp import usuario_bp
 from .routes.canal_bp import canal_bp
 from .routes.chat_bp import chat_bp
-
+from .routes.error_handler import errors
 from .database import DatabaseConnection
 
 def init_app():
@@ -27,4 +27,5 @@ def init_app():
     app.register_blueprint(canal_bp, url_prefix= "/canal")
     app.register_blueprint(chat_bp, url_prefix="/chat")
 
+    app.register_blueprint(errors)
     return app
