@@ -6,13 +6,14 @@ class UsuarioController:
 
     @classmethod
     def inicio_sesion(cls):
+        """Inicia sesion"""
         data = request.json
         usuario = Usuario(
             nombre_usuario = data.get('nombre_usuario'),
             contrasena = data.get('contrasena')
         )
         
-        if Usuario.is_registered(usuario):
+        if Usuario.existe(usuario):
             session['nombre_usuario'] = data.get('nombre_usuario')
             return {"message": "Sesion iniciada"}, 200
         else:
@@ -21,15 +22,21 @@ class UsuarioController:
    
     @classmethod
     def mostrar_usuario(cls):
-        nombre_usuario = session.get('username')
-        usuario = Usuario.get(Usuario(nombre_usuario = nombre_usuario))
-        if usuario is None:
-            return {"message": "Usuario no encontrado"}, 404
+        """Devuelve los datos del usuario logueado"""
+        nombre_usuario = session.get('nombre_usuario')
+        if nombre_usuario:
+            usuario_logeado = Usuario(nombre_usuario=nombre_usuario)
+            resultado = Usuario.obtener_usuario(usuario_logeado)
+            if resultado is None:
+                return {"message": "Usuario no encontrado"}, 404
+    
+            return resultado.serialize(), 200
         else:
-            return usuario.serialize(), 200
+            return {"message": "Usuario no encontrado"}, 400
     
     @classmethod
     def cerrar_sesion(cls):
+        """Destruye la sesion"""
         session.pop('nombre_usuario', None)
         return {"message": "Sesion cerrada"}, 200
     
