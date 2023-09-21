@@ -1,6 +1,6 @@
 from flask import request
+from app.models.exceptions import DatosInvalidos, NoEncontrado
 from app.models.servidor import Servidor
-from app.models.usuario import Usuario
 
 
 class ServidorController:
@@ -14,11 +14,11 @@ class ServidorController:
         nombre_servidor = data.get('nombre_servidor')
 
         if servidor.existe(nombre_servidor):
-            # AGREGAR EXCEPCIONES
-            return {'error': 'El servidor ya existe'},400
+            raise DatosInvalidos(400, "Petición invalida", f"El servidor {nombre_servidor} ya existe")
+            
         else:
             Servidor.crear_servidor(servidor)
-        return {'message': 'servidor creado exitosamente'}, 200
+            return {'message': 'servidor creado exitosamente'}, 200
     
 # READ
 
@@ -39,8 +39,7 @@ class ServidorController:
         if resultado is not None:
             return resultado.serialize(), 200
         else:
-            # RAISE EXCEPTION
-            return {'error': 'El servidor no existe'}, 400
+            raise NoEncontrado(404, "No encontrado", "El servidor no existe")
         
     # DELETE
     @classmethod
@@ -48,15 +47,22 @@ class ServidorController:
         """Borra un servidor"""
         servidor = Servidor(id_servidor=id_servidor)
         # EXCEPCION EN CASO DE QUE EL SERVIDOR NO EXISTA
-        Servidor.eliminar_servidor(servidor)
-        return {'message': 'Servidor eliminado exitosamente'}
+        print(servidor.id_servidor)
+        if servidor.obtener_servidor(servidor) is None:
+            raise NoEncontrado(404, "No encontrado", "El servidor no existe")
+        else:
+            Servidor.eliminar_servidor(servidor)
+            return {'message': 'Servidor eliminado exitosamente'}
             
     @classmethod
     def traer_servidores_por_usuario(self, nombre_usuario):
-        """Tre los servidores a los que pertenece un usuario"""
+        """Trae los servidores a los que pertenece un usuario, si un usuario no pertenece a ningun servidor, se produce un error"""
         # nombre_usuario = Usuario(nombre_usuario=nombre_usuario)
         resultado = Servidor.traer_servidores_de_un_usuario(nombre_usuario=nombre_usuario)
         servidores = []
-        for servidor in resultado:
-            servidores.append(servidor.serialize())
-        return servidores, 200
+        if len(resultado) > 0:
+            for servidor in resultado:
+                servidores.append(servidor.serialize())
+            return servidores, 200
+        else:
+            raise DatosInvalidos(400, "Peticion invalida", f"El usuario {nombre_usuario} no se ha unido a ningun servidor")

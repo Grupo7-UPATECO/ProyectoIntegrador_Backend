@@ -1,5 +1,6 @@
 from flask import request
 from app.models.canal import Canal
+from app.models.exceptions import DatosInvalidos
 
 
 
@@ -33,8 +34,7 @@ class CanalController:
             nombre_canal = data.get('nombre_canal')
     
             if canal.existe(nombre_canal):
-                # AGREGAR EXCEPCIONES
-                return {'error': 'El canal ya existe'},400
+                raise DatosInvalidos(400, "Peticion invalida", f"El canal {nombre_canal} ya existe")
             else:
                 Canal.crear_canal(canal)
             return {'message': 'canal creado exitosamente'}, 200
