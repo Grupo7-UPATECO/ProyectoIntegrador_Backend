@@ -1,4 +1,4 @@
-from app.models.exceptions import NoAutorizado, NoEncontrado
+from app.models.exceptions import DatosInvalidos, NoAutorizado, NoEncontrado
 from ..models.usuario import Usuario
 
 from flask import request, session
@@ -41,3 +41,17 @@ class UsuarioController:
         session.pop('nombre_usuario', None)
         return {"message": "Sesion cerrada"}, 200
     
+
+    @classmethod
+    def crear_cuenta(cls):
+        """Recibe los datos del formulario de registro y envia a la base de datos"""
+        data = request.json
+        usuario = Usuario(**data)
+        nombre_usuario = data.get('nombre_usuario')
+        if usuario.obtener_usuario(usuario) is None:
+            Usuario.registrar_nuevo(usuario)
+            return {"message": "Usuario creado exitosamente."}
+        else:
+            raise DatosInvalidos(400, "Petición invalida", f"El usuario {nombre_usuario} ya existe. Elije otro nombre de usuario.")
+           
+        
