@@ -87,3 +87,15 @@ class Servidor:
                 servidores.append(self(*resultado))
                 
         return servidores
+    
+    @classmethod
+    def obtener_servidor_por_nombre(self, servidor):
+        """Obtiene un servidor segun su nombre"""
+        query = """SELECT id_servidor, nombre_servidor, id_usuario FROM discordio.servidor WHERE nombre_servidor = %s"""
+        params = servidor.nombre_servidor,
+        resultado = DatabaseConnection.fetch_one(query, params=params)
+        if resultado is not None:
+            return self(*resultado)
+   
+        return None
+    

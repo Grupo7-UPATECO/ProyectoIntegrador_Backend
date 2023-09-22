@@ -66,3 +66,13 @@ class ServidorController:
             return servidores, 200
         else:
             raise DatosInvalidos(400, "Peticion invalida", f"El usuario {nombre_usuario} no se ha unido a ningun servidor")
+        
+    @classmethod
+    def traer_servidor_por_nombre(self, nombre_servidor):
+        """Devuelve un servidor"""
+        servidor = Servidor(nombre_servidor=nombre_servidor)
+        resultado = Servidor.obtener_servidor_por_nombre(servidor)
+        if resultado is not None:
+            return resultado.serialize(), 200
+        else:
+            raise NoEncontrado(404, "No encontrado", "El servidor no existe")
