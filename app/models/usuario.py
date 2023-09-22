@@ -42,4 +42,11 @@ class Usuario:
    
         return None
 
+    @classmethod
+    def registrar_nuevo(self, usuario):
+        """Registra en la base de datos un nuevo usuario"""
+        query = """INSERT INTO discordio.usuarios (nombre_usuario, nombre, apellido, email, contrasena) VALUES (%s, %s, %s, %s, %s)"""
+        params = usuario.nombre_usuario, usuario.nombre, usuario.apellido, usuario.email, usuario.contrasena
+        result = DatabaseConnection.execute_query(query, params=params)
+        return result
     
