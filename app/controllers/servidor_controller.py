@@ -67,6 +67,8 @@ class ServidorController:
         else:
             raise DatosInvalidos(400, "Peticion invalida", f"El usuario {nombre_usuario} no se ha unido a ningun servidor")
         
+    
+    #buscador
     @classmethod
     def traer_servidor_por_nombre(self, nombre_servidor):
         """Devuelve un servidor"""
