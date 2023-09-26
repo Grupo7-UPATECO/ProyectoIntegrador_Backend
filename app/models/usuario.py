@@ -50,3 +50,24 @@ class Usuario:
         result = DatabaseConnection.execute_query(query, params=params)
         return result
     
+    # UPDATE `discordio`.`usuarios` SET `nombre_usuario` = 'marpe' WHERE (`id_usuario` = '7');
+    @classmethod
+    def modificar_datos(cls, usuario):
+        """Modifica la informacion de un usuario en la base de datos"""
+        columnas = {"nombre_usuario", "nombre", "apellido", "email"}
+        query_list = []
+        params = []
+
+        for clave, valor in usuario.__dict__.items():
+            if clave in columnas and valor is not None:
+                query_list.append(f"{clave} = %s")
+                params.append(valor)
+        params.append(usuario.id_usuario)
+
+        query = "UPDATE discordio.usuarios SET "+",".join(query_list) + " WHERE id_usuario = %s"
+        result = DatabaseConnection.execute_query(query, params=params)
+
+        if result:
+            return usuario
+        else:
+            return None
