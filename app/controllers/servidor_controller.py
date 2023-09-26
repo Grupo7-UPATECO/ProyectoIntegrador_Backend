@@ -78,3 +78,17 @@ class ServidorController:
             return resultado.serialize(), 200
         else:
             raise NoEncontrado(404, "No encontrado", "El servidor no existe")
+        
+
+
+    @classmethod
+    def traer_servidores_por_id_usuario(cls, id_usuario):
+        """Trae los nombre_servidor con el mismo id_usuario"""
+        resultado = Servidor.obtener_nombre_servidores_por_id_usuario(id_usuario)
+        nombres_servidores = []
+        if len(resultado) > 0:
+            for nombre_servidor in resultado:
+                nombres_servidores.append(nombre_servidor)
+            return {'nombre_servidores': nombres_servidores}, 200
+        else:
+            raise NoEncontrado(404, "No encontrado", f"No hay servidores para el usuario con id {id_usuario}")

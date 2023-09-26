@@ -11,3 +11,6 @@ servidor_bp.route('/', methods=['POST'])(ServidorController.crear_nuevo)
 servidor_bp.route('/<int:id_servidor>', methods=['DELETE'])(ServidorController.eliminar_servidor)
 # buscar un servidor por nombre
 servidor_bp.route('/buscar/<string:nombre_servidor>', methods=['GET'])(ServidorController.traer_servidor_por_nombre)
+
+
+servidor_bp.route('/usuario/<int:id_usuario>', methods=['GET'])(ServidorController.traer_servidores_por_id_usuario)

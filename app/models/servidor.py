@@ -119,3 +119,22 @@ class Servidor:
    
         return None
     
+    @classmethod
+    def obtener_nombre_servidores_por_id_usuario(cls, id_usuario):
+        """
+        Obtiene los nombre_servidor con el mismo id_usuario.
+        """
+        query = """
+        SELECT nombre_servidor
+        FROM discordio.servidor
+        WHERE id_usuario = %s;
+        """
+        params = (id_usuario,)
+        resultados = DatabaseConnection.fetch_all(query, params=params)
+
+        nombres_servidores = []
+        if resultados is not None:
+            for resultado in resultados:
+                nombres_servidores.append(resultado[0])
+
+        return nombres_servidores
