@@ -125,7 +125,7 @@ class Servidor:
         Obtiene los nombre_servidor con el mismo id_usuario.
         """
         query = """
-        SELECT nombre_servidor
+        SELECT *
         FROM discordio.servidor
         WHERE id_usuario = %s;
         """
@@ -135,6 +135,6 @@ class Servidor:
         nombres_servidores = []
         if resultados is not None:
             for resultado in resultados:
-                nombres_servidores.append(resultado[0])
+                nombres_servidores.append(resultado)
 
         return nombres_servidores
