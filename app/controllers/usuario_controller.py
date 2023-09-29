@@ -77,8 +77,8 @@ class UsuarioController:
        
                 usuario_ocupado = Usuario.obtener_usuario(usuario)
                 
-                if usuario_ocupado is None:
-                    # TODO AGREGAR EXCEPCION CUANDO EL USUARIO NO CAMBIA SU NOMBRE DE USUARIO
+                if usuario_ocupado is None or usuario_ocupado.id_usuario == id_usuario:
+                    
                     result = Usuario.modificar_datos(usuario)
                     response = {"message": "Modificacion realizada exitosamente"}
                     # return result.serialize(), 200
